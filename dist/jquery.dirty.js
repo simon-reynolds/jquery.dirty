@@ -193,7 +193,7 @@ var dataIsDirty = "isDirty";
         setDirty: function() {
             this.isDirty = true;
             this.history[0] = this.history[1];
-            this.history[1] = "dirty";
+            this.history[1] = dirty;
         },
 
         setClean: function() {
@@ -210,12 +210,33 @@ var dataIsDirty = "isDirty";
         //Lets me know if the previous status of the form was clean
         wasJustClean: function() {
             return (this.history[0] === clean);
+        },
+
+        setAsClean: function(){
+            this.saveInitialValues();
+            this.setClean();
+        },
+
+        resetForm: function(){
+            this.form.find("input, select, textarea").each(function() {
+                var value = $(this).data(dataInitialValue);
+                $(this).val(value);
+            });
+
+            this.form.find("input[type=checkbox], input[type=radio]").each(function() {
+                var initialCheckedState = $(this).data(dataInitialValue);
+                var isChecked = initialCheckedState === "checked";
+
+                $(this).prop("checked", isChecked);
+            });
+
+            this.checkValues();
         }
     };
 
     $.fn.dirty = function(options) {
 
-        if (/^(isDirty|isClean|refreshEvents|showDirtyFields)$/i.test(options)) {
+        if (/^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
             //Check if we have an instance of dirty for this form
             var d = getSingleton($(this).attr("id"));
 
@@ -232,8 +253,12 @@ var dataIsDirty = "isDirty";
                 return d.isDirty;
             case "refreshevents":
                 d.refreshEvents();
+            case "resetform":
+                d.resetForm();
+            case "setasclean":
+                return d.setAsClean();
             case "showdirtyfields":
-                return d.showDirtyFields();
+                return d.showDirtyFields();            
             }
 
         } else if (typeof options === "object" || !options) {

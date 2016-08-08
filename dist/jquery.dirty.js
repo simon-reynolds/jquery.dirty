@@ -122,7 +122,10 @@ var dataIsDirty = "isDirty";
 
         showDirtyFields: function() {
             var d = this;
-            return d.form.find(":data('isDirty')");
+
+            return d.form.find("input, select, textarea").filter(function(_, e){
+                return $(e).data("isDirty");
+            });
         },
 
         setEvents: function() {
@@ -160,17 +163,26 @@ var dataIsDirty = "isDirty";
         checkValues: function() {
             var d = this;
 
+            var formIsDirty = false;
+
             this.form.find("input, select, textarea").each(function() {
                 var thisIsDirty = d.isFieldDirty($(this));
                 $(this).data(dataIsDirty, thisIsDirty);
+
+                if(thisIsDirty){
+                    formIsDirty = true;
+                }
             });
             this.form.find("input[type=checkbox], input[type=radio]").each(function() {
                 var thisIsDirty = d.isCheckboxDirty($(this));
                 $(this).data(dataIsDirty, thisIsDirty);
-            });
-            var isDirty = (this.form.find(":data('isDirty')").length > 0);
 
-            if (isDirty) {
+                if(thisIsDirty){
+                    formIsDirty = true;
+                }
+            });
+
+            if (formIsDirty) {
                 d.setDirty();
             } else {
                 d.setClean();

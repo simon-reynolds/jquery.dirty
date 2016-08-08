@@ -31,4 +31,8 @@ All state information about the form is held in the data object for the form rat
 
 `$("#myForm").dirty("refreshEvents");` remove and reapply events. Can be used if content is dynamically added to form
 
+`$("#myForm").dirty("resetForm");` reset the form to the original state when `$("#myForm").dirty();` was called
+
+`$("#myForm").dirty("setAsClean");` set the current state of the formas the 'clean' state. Calling `resetForm` after this will restore the form to the state when `setAsClean`was called
+
 `$("#myForm").dirty("showDirtyFields");` returns jQuery array of all modified fields in the form

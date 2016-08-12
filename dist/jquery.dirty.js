@@ -131,11 +131,9 @@ var dataIsDirty = "isDirty";
         setEvents: function() {
             var d = this;
 
-            $(document).ready(function() {
-                setSubmitEvents(d);
-                setNamespacedEvents(d);
-                setNamespacedEventTriggers(d);
-            });
+            setSubmitEvents(d);
+            setNamespacedEvents(d);
+            setNamespacedEventTriggers(d);
         },
 
         isFieldDirty: function($field) {

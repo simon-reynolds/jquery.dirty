@@ -23,6 +23,9 @@
     "tests"
   ],
   "dependencies": {
-      "jquery": ">=1.5"
+    "jquery": ">=1.5"
+  },
+  "devDependencies": {
+    "qunit": "^2.0.1"
   }
 }

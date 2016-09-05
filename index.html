@@ -74,6 +74,10 @@
 
 <p><code>$("#myForm").dirty("refreshEvents");</code> remove and reapply events. Can be used if content is dynamically added to form</p>
 
+<p><code>$("#myForm").dirty("resetForm");</code> reset the form to the original state when <code>$("#myForm").dirty();</code> was called</p>
+
+<p><code>$("#myForm").dirty("setAsClean");</code> set the current state of the formas the 'clean' state. Calling <code>resetForm</code> after this will restore the form to the state when <code>setAsClean</code>was called</p>
+
 <p><code>$("#myForm").dirty("showDirtyFields");</code> returns jQuery array of all modified fields in the form</p>
       </section>
     </div>

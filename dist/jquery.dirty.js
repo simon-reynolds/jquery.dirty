@@ -17,9 +17,9 @@ var dataIsDirty = "isDirty";
 
     var getSingleton = function(id) {
         var result;
-        $(singleDs).each(function() {
-            if ($(this)[0].id === id) {
-                result = $(this)[0];
+        singleDs.forEach(function(e) {
+            if (e.id === id) {
+                result = e;
             }
         });
         return result;
@@ -104,13 +104,13 @@ var dataIsDirty = "isDirty";
         },
 
         saveInitialValues: function() {
-            this.form.find("input, select, textarea").each(function() {
-                $(this).data(dataInitialValue, $(this).val());
+            this.form.find("input, select, textarea").each(function(_, e) {
+                $(e).data(dataInitialValue, $(e).val() || '');
             });
 
-            this.form.find("input[type=checkbox], input[type=radio]").each(function() {
-                var isChecked = $(this).is(":checked") ? "checked" : "unchecked";
-                $(this).data(dataInitialValue, isChecked);
+            this.form.find("input[type=checkbox], input[type=radio]").each(function(_, e) {
+                var isChecked = $(e).is(":checked") ? "checked" : "unchecked";
+                $(e).data(dataInitialValue, isChecked);
             });
         },
 
@@ -138,7 +138,10 @@ var dataIsDirty = "isDirty";
 
         isFieldDirty: function($field) {
             var initialValue = $field.data(dataInitialValue);
+             // Explicitly check for null/undefined here as value may be `false`, so ($field.data(dataInitialValue) || '') would not work
+            if (initialValue == null) { initialValue = ''; }
             var currentValue = $field.val();
+            if (currentValue == null) { currentValue = ''; }
 
             // Boolean values can be encoded as "true/false" or "True/False" depending on underlying frameworks so we need a case insensitive comparison
             var boolRegex = /^(true|false)$/i;
@@ -163,17 +166,17 @@ var dataIsDirty = "isDirty";
 
             var formIsDirty = false;
 
-            this.form.find("input, select, textarea").each(function() {
-                var thisIsDirty = d.isFieldDirty($(this));
-                $(this).data(dataIsDirty, thisIsDirty);
+            this.form.find("input, select, textarea").each(function(_, e) {
+                var thisIsDirty = d.isFieldDirty($(e));
+                $(e).data(dataIsDirty, thisIsDirty);
 
                 if(thisIsDirty){
                     formIsDirty = true;
                 }
             });
-            this.form.find("input[type=checkbox], input[type=radio]").each(function() {
-                var thisIsDirty = d.isCheckboxDirty($(this));
-                $(this).data(dataIsDirty, thisIsDirty);
+            this.form.find("input[type=checkbox], input[type=radio]").each(function(_, e) {
+                var thisIsDirty = d.isCheckboxDirty($(e));
+                $(e).data(dataIsDirty, thisIsDirty);
 
                 if(thisIsDirty){
                     formIsDirty = true;
@@ -228,16 +231,16 @@ var dataIsDirty = "isDirty";
         },
 
         resetForm: function(){
-            this.form.find("input, select, textarea").each(function() {
-                var value = $(this).data(dataInitialValue);
-                $(this).val(value);
+            this.form.find("input, select, textarea").each(function(_, e) {
+                var value = $(e).data(dataInitialValue);
+                $(e).val(value);
             });
 
-            this.form.find("input[type=checkbox], input[type=radio]").each(function() {
-                var initialCheckedState = $(this).data(dataInitialValue);
+            this.form.find("input[type=checkbox], input[type=radio]").each(function(_, e) {
+                var initialCheckedState = $(e).data(dataInitialValue);
                 var isChecked = initialCheckedState === "checked";
 
-                $(this).prop("checked", isChecked);
+                $(e).prop("checked", isChecked);
             });
 
             this.checkValues();
@@ -248,6 +251,7 @@ var dataIsDirty = "isDirty";
 
         if (/^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
             //Check if we have an instance of dirty for this form
+            // TODO: check if this is DOM or jQuery object
             var d = getSingleton($(this).attr("id"));
 
             if (!d) {
@@ -273,9 +277,9 @@ var dataIsDirty = "isDirty";
 
         } else if (typeof options === "object" || !options) {
 
-            return this.each(function() {
+            return this.each(function(_, e) {
                 options = $.extend({}, $.fn.dirty.defaults, options);
-                var dirty = new Dirty($(this), options);
+                var dirty = new Dirty($(e), options);
                 dirty.init();
             });
 

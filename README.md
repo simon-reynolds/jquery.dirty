@@ -36,3 +36,6 @@ All state information about the form is held in the data object for the form rat
 `$("#myForm").dirty("setAsClean");` set the current state of the formas the 'clean' state. Calling `resetForm` after this will restore the form to the state when `setAsClean`was called
 
 `$("#myForm").dirty("showDirtyFields");` returns jQuery array of all modified fields in the form
+
+# Credits
+Thanks to Tomasz Świenty for feedback and a fix for an issue where a value could resolve as `null`

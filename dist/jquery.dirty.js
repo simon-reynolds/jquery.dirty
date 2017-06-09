@@ -40,11 +40,11 @@ var dataIsDirty = "isDirty";
     };
 
     var setNamespacedEventTriggers = function(d) {
-        d.form.find("input, select").on("change", function (e) {
+        d.form.find("input, select").not(":checkbox").not(":radio").on("change", function (e) {
             $(this).trigger(e.type + ".dirty");
         });
 
-        d.form.find("input, textarea").on("keyup keydown blur", function(e) {
+        d.form.find("input, textarea").not(":checkbox").not(":radio").on("keyup keydown blur", function(e) {
             $(this).trigger(e.type + ".dirty");
         });
 
@@ -54,17 +54,20 @@ var dataIsDirty = "isDirty";
     };
 
     var setNamespacedEvents = function(d) {
-        d.form.find("input, select").on("change.dirty", function () {
-            d.checkValues();
-        });
+        d.form.find("input, select").not(":checkbox").not(":radio")
+            .on("change.dirty", function (e) {
+                d.checkValues(e);
+            });
 
-        d.form.find("input, textarea").on("keyup.dirty keydown.dirty blur.dirty", function() {
-            d.checkValues();
-        });
+        d.form.find("input, textarea").not(":checkbox").not(":radio")
+            .on("keyup.dirty keydown.dirty blur.dirty", function(e) {
+                d.checkValues(e);
+            });
 
-        d.form.find("input[type=radio], input[type=checkbox]").on("click.dirty change.dirty blur.dirty", function() {
-            d.checkValues();
-        });
+        d.form.find("input[type=radio], input[type=checkbox]")
+            .on("click.dirty change.dirty blur.dirty", function(e) {
+                d.checkValues(e);
+            });
 
         d.form.on("dirty", function() {
             d.options.onDirty();
@@ -104,7 +107,7 @@ var dataIsDirty = "isDirty";
         },
 
         saveInitialValues: function() {
-            this.form.find("input, select, textarea").each(function(_, e) {
+            this.form.find("input, select, textarea").not(":checkbox").not(":radio").each(function(_, e) {
                 $(e).data(dataInitialValue, $(e).val() || '');
             });
 
@@ -161,12 +164,12 @@ var dataIsDirty = "isDirty";
             return initialValue !== currentValue;
         },
 
-        checkValues: function() {
+        checkValues: function(e) {
             var d = this;
 
             var formIsDirty = false;
 
-            this.form.find("input, select, textarea").each(function(_, e) {
+            this.form.find("input, select, textarea").not(":checkbox").not(":radio").each(function(_, e) {
                 var thisIsDirty = d.isFieldDirty($(e));
                 $(e).data(dataIsDirty, thisIsDirty);
 
@@ -190,6 +193,7 @@ var dataIsDirty = "isDirty";
             }
 
             d.fireEvents();
+            e.stopImmediatePropagation();
         },
 
         fireEvents: function() {

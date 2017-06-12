@@ -64,3 +64,57 @@ QUnit.test("form is marked as dirty when modified", function(assert){
   assert.ok($form.dirty("isClean") === false, "form is not clean when form modified");
   assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
 });
+
+QUnit.test("form is marked as dirty when a radio button is selected", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  $form.dirty();
+  
+  // Act
+  var $input = $form.find("input:radio:first");
+  $input.prop("checked", true);
+  $input.trigger("change");
+
+  // Assert
+  assert.ok($form.dirty("isClean") === false, "form is not clean when form modified");
+  assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
+});
+
+QUnit.test("form is marked as dirty when a checkbox button is selected", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  $form.dirty();
+  
+  // Act
+  var $input = $form.find("input:checkbox:first");
+  $input.prop("checked", true);
+  $input.trigger("change");
+
+  // Assert
+  assert.ok($form.dirty("isClean") === false, "form is not clean when form modified");
+  assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
+});
+
+QUnit.test("showDirtyFields returns correct fields", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  $form.dirty();
+  
+  // Act I
+  var $text = $form.find("input:text:first");
+  $text.val("test").trigger("change");
+
+  // Assert I
+  var listDirtyFields = $form.dirty("showDirtyFields");
+  assert.ok(listDirtyFields.length === 1, "Should only be listig one dirty field");
+
+  // Act II
+  var $input = $form.find("input:checkbox:first");
+  $input.prop("checked", true);
+  $input.trigger("change");
+
+  // Assert II
+  listDirtyFields = $form.dirty("showDirtyFields");
+  assert.ok(listDirtyFields.length === 2, "Should only be listing two dirty fields");
+
+});

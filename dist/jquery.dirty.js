@@ -6,14 +6,14 @@
  * Released under the MIT license
  */
 
-//Save dirty instances
-var singleDs = [];
-var dirty = "dirty";
-var clean = "clean";
-var dataInitialValue = "dirtyInitialValue";
-var dataIsDirty = "isDirty";
-
 (function($) {
+
+    //Save dirty instances
+    var singleDs = [];
+    var dirty = "dirty";
+    var clean = "clean";
+    var dataInitialValue = "dirtyInitialValue";
+    var dataIsDirty = "isDirty";
 
     var getSingleton = function(id) {
         var result;

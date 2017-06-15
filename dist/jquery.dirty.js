@@ -174,11 +174,11 @@
 
         fireEvents: function() {
 
-            if (this.isDirty && this.wasJustClean()) {
+            if (this.isDirty && (this.options.fireEventsOnEachChange || this.wasJustClean())) {
                 this.form.trigger("dirty");
             }
 
-            if (!this.isDirty && this.wasJustDirty()) {
+            if (!this.isDirty && (this.options.fireEventsOnEachChange || this.wasJustDirty())) {
                 this.form.trigger("clean");
             }
         },
@@ -234,7 +234,7 @@
 
     $.fn.dirty = function(options) {
 
-        if (/^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
+        if (typeof options === "string" && /^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
             //Check if we have an instance of dirty for this form
             // TODO: check if this is DOM or jQuery object
             var d = getSingleton($(this).attr("id"));
@@ -276,11 +276,7 @@
         leavingMessage: "There are unsaved changes on this page which will be discarded if you continue.",
         onDirty: $.noop, //This function is fired when the form gets dirty
         onClean: $.noop, //This funciton is fired when the form gets clean again
-        /*
-            New options to add (need better names)
-            fireOnDirtyEachTime
-            fireOnCleanEachTime
-        */
+        fireEventsOnEachChange: false, // Fire onDirty/onClean on each modification of the form
     };
 
 })(jQuery);

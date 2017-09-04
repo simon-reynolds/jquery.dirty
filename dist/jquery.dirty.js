@@ -6,14 +6,14 @@
  * Released under the MIT license
  */
 
-//Save dirty instances
-var singleDs = [];
-var dirty = "dirty";
-var clean = "clean";
-var dataInitialValue = "dirtyInitialValue";
-var dataIsDirty = "isDirty";
-
 (function($) {
+
+    //Save dirty instances
+    var singleDs = [];
+    var dirty = "dirty";
+    var clean = "clean";
+    var dataInitialValue = "dirtyInitialValue";
+    var dataIsDirty = "isDirty";
 
     var getSingleton = function(id) {
         var result;
@@ -40,34 +40,17 @@ var dataIsDirty = "isDirty";
     };
 
     var setNamespacedEventTriggers = function(d) {
-        d.form.find("input, select").not(":checkbox").not(":radio").on("change", function (e) {
-            $(this).trigger(e.type + ".dirty");
-        });
 
-        d.form.find("input, textarea").not(":checkbox").not(":radio").on("keyup keydown blur", function(e) {
-            $(this).trigger(e.type + ".dirty");
-        });
-
-        d.form.find("input[type=radio], input[type=checkbox]").on("click change blur", function(e) {
+        d.form.find("input, select, textarea").on("change click keyup keydown blur", function(e) {
             $(this).trigger(e.type + ".dirty");
         });
     };
 
     var setNamespacedEvents = function(d) {
-        d.form.find("input, select").not(":checkbox").not(":radio")
-            .on("change.dirty", function (e) {
-                d.checkValues(e);
-            });
 
-        d.form.find("input, textarea").not(":checkbox").not(":radio")
-            .on("keyup.dirty keydown.dirty blur.dirty", function(e) {
-                d.checkValues(e);
-            });
-
-        d.form.find("input[type=radio], input[type=checkbox]")
-            .on("click.dirty change.dirty blur.dirty", function(e) {
-                d.checkValues(e);
-            });
+        d.form.find("input, select, textarea").on("change.dirty click.dirty keyup.dirty keydown.dirty blur.dirty", function(e) {
+            d.checkValues(e);
+        });
 
         d.form.on("dirty", function() {
             d.options.onDirty();
@@ -79,12 +62,7 @@ var dataIsDirty = "isDirty";
     };
 
     var clearNamespacedEvents = function(d) {
-        d.form.find("input, select").off("change.dirty");
-
-        d.form.find("input, textarea").off("keyup.dirty keydown.dirty blur.dirty");
-
-        //fronteend's icheck support
-        d.form.find("input[type=radio], input[type=checkbox]").off("click.dirty change.dirty blur.dirty");
+        d.form.find("input, select, textarea").off("change.dirty click.dirty keyup.dirty keydown.dirty blur.dirty");
 
         d.form.off("dirty");
 
@@ -106,14 +84,22 @@ var dataIsDirty = "isDirty";
             this.setEvents();
         },
 
-        saveInitialValues: function() {
-            this.form.find("input, select, textarea").not(":checkbox").not(":radio").each(function(_, e) {
-                $(e).data(dataInitialValue, $(e).val() || '');
-            });
+        isRadioOrCheckbox: function(el){
+            return $(el).is(":radio, :checkbox");
+        },
 
-            this.form.find("input[type=checkbox], input[type=radio]").each(function(_, e) {
-                var isChecked = $(e).is(":checked") ? "checked" : "unchecked";
-                $(e).data(dataInitialValue, isChecked);
+        saveInitialValues: function() {
+            var d = this;
+            this.form.find("input, select, textarea").each(function(_, e) {
+
+                var isRadioOrCheckbox = d.isRadioOrCheckbox(e);
+
+                if (isRadioOrCheckbox) {
+                    var isChecked = $(e).is(":checked") ? "checked" : "unchecked";
+                    $(e).data(dataInitialValue, isChecked);
+                } else {
+                    $(e).data(dataInitialValue, $(e).val() || '');
+                }
             });
         },
 
@@ -166,25 +152,15 @@ var dataIsDirty = "isDirty";
 
         checkValues: function(e) {
             var d = this;
+            
+            var el = e.target;
+            var isRadioOrCheckbox = d.isRadioOrCheckbox(e);
+            var $el = $(el);
 
-            var formIsDirty = false;
+            var thisIsDirty = isRadioOrCheckbox ? d.isCheckboxDirty($el) : d.isFieldDirty($el);
+            $el.data(dataIsDirty, thisIsDirty);
 
-            this.form.find("input, select, textarea").not(":checkbox").not(":radio").each(function(_, e) {
-                var thisIsDirty = d.isFieldDirty($(e));
-                $(e).data(dataIsDirty, thisIsDirty);
-
-                if(thisIsDirty){
-                    formIsDirty = true;
-                }
-            });
-            this.form.find("input[type=checkbox], input[type=radio]").each(function(_, e) {
-                var thisIsDirty = d.isCheckboxDirty($(e));
-                $(e).data(dataIsDirty, thisIsDirty);
-
-                if(thisIsDirty){
-                    formIsDirty = true;
-                }
-            });
+            var formIsDirty = thisIsDirty;
 
             if (formIsDirty) {
                 d.setDirty();
@@ -198,11 +174,11 @@ var dataIsDirty = "isDirty";
 
         fireEvents: function() {
 
-            if (this.isDirty && this.wasJustClean()) {
+            if (this.isDirty && (this.options.fireEventsOnEachChange || this.wasJustClean())) {
                 this.form.trigger("dirty");
             }
 
-            if (!this.isDirty && this.wasJustDirty()) {
+            if (!this.isDirty && (this.options.fireEventsOnEachChange || this.wasJustDirty())) {
                 this.form.trigger("clean");
             }
         },
@@ -235,16 +211,21 @@ var dataIsDirty = "isDirty";
         },
 
         resetForm: function(){
+            var d = this;
             this.form.find("input, select, textarea").each(function(_, e) {
-                var value = $(e).data(dataInitialValue);
-                $(e).val(value);
-            });
 
-            this.form.find("input[type=checkbox], input[type=radio]").each(function(_, e) {
-                var initialCheckedState = $(e).data(dataInitialValue);
-                var isChecked = initialCheckedState === "checked";
+                var $e = $(e);
+                var isRadioOrCheckbox = d.isRadioOrCheckbox(e);
 
-                $(e).prop("checked", isChecked);
+                if (isRadioOrCheckbox) {
+                    var initialCheckedState = $e.data(dataInitialValue);
+                    var isChecked = initialCheckedState === "checked";
+
+                    $e.prop("checked", isChecked);
+                } else {
+                    var value = $e.data(dataInitialValue);
+                    $e.val(value);
+                }
             });
 
             this.checkValues();
@@ -253,7 +234,7 @@ var dataIsDirty = "isDirty";
 
     $.fn.dirty = function(options) {
 
-        if (/^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
+        if (typeof options === "string" && /^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
             //Check if we have an instance of dirty for this form
             // TODO: check if this is DOM or jQuery object
             var d = getSingleton($(this).attr("id"));
@@ -293,8 +274,9 @@ var dataIsDirty = "isDirty";
     $.fn.dirty.defaults = {
         preventLeaving: false,
         leavingMessage: "There are unsaved changes on this page which will be discarded if you continue.",
-        onDirty: function() {}, //This function is fired when the form gets dirty
-        onClean: function () { } //This funciton is fired when the form gets clean again
+        onDirty: $.noop, //This function is fired when the form gets dirty
+        onClean: $.noop, //This funciton is fired when the form gets clean again
+        fireEventsOnEachChange: false, // Fire onDirty/onClean on each modification of the form
     };
 
 })(jQuery);

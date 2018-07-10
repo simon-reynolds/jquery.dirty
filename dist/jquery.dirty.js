@@ -187,12 +187,16 @@
             this.isDirty = true;
             this.history[0] = this.history[1];
             this.history[1] = dirty;
+
+            this.onDirty();
         },
 
         setClean: function() {
             this.isDirty = false;
             this.history[0] = this.history[1];
             this.history[1] = clean;
+
+            this.onClean();
         },
 
         //Lets me know if the previous status of the form was dirty
@@ -208,6 +212,11 @@
         setAsClean: function(){
             this.saveInitialValues();
             this.setClean();
+        },
+
+        setAsDirty: function(){
+            this.saveInitialValues();
+            this.setDirty();
         },
 
         resetForm: function(){
@@ -256,6 +265,8 @@
                 d.resetForm();
             case "setasclean":
                 return d.setAsClean();
+            case "setasdirty":
+                return d.setAsDirty();
             case "showdirtyfields":
                 return d.showDirtyFields();            
             }

@@ -176,3 +176,20 @@ QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", functi
   // Assert II
   assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly");
 });
+
+QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  
+  // Act I
+  $form.dirty();
+
+  // Assert I
+  assert.ok($form.dirty("isClean") === true, "form is clean when plugin initialized");
+  assert.ok($form.dirty("isDirty") === false, "form is not dirty when plugin initialized");
+
+  // Act II
+  $form.dirty("setAsDirty");
+  assert.ok($form.dirty("isClean") === false, "form is now dirty");
+  assert.ok($form.dirty("isDirty") === true, "form is now dirty");
+});

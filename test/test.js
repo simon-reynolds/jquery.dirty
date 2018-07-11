@@ -139,7 +139,7 @@ QUnit.test("onDirty only fired once when fireEventsOnEachChange is false", funct
   $text.val("test").trigger("change");
 
   // Assert I
-  assert.ok(onDirtyCalledCount === 1, "onDirty was not called correctly");
+  assert.ok(onDirtyCalledCount === 1, "onDirty was not called correctly. Value should be 1, was " + onDirtyCalledCount);
 
   // Act II
   var $input = $form.find("input:checkbox:first");
@@ -147,7 +147,7 @@ QUnit.test("onDirty only fired once when fireEventsOnEachChange is false", funct
   $input.trigger("change");
 
   // Assert II
-  assert.ok(onDirtyCalledCount === 1, "onDirty should not have been called here");
+  assert.ok(onDirtyCalledCount === 1, "onDirty should not have been called here. Value should be 1, was " + onDirtyCalledCount);
 });
 
 QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", function(assert){
@@ -167,12 +167,53 @@ QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", functi
   var $text = $form.find("input:text:first");
   $text.val("test").trigger("change");
   // Assert I
-  assert.ok(onDirtyCalledCount === 1, "onDirty was not called correctly");
+  assert.ok(onDirtyCalledCount === 1, "onDirty was not called correctly. Value should be 1, was " + onDirtyCalledCount);
   // Act II
   var $input = $form.find("input:checkbox:first");
   $input.prop("checked", true);
   $input.trigger("change");
 
   // Assert II
-  assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly");
+  assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly. Value should be 1, was " + onDirtyCalledCount);
+});
+
+QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  
+  // Act I
+  $form.dirty();
+
+  // Assert I
+  assert.ok($form.dirty("isClean") === true, "form is clean when plugin initialized");
+  assert.ok($form.dirty("isDirty") === false, "form is not dirty when plugin initialized");
+
+  // Act II
+  $form.dirty("setAsDirty");
+  assert.ok($form.dirty("isClean") === false, "form is now dirty");
+  assert.ok($form.dirty("isDirty") === true, "form is now dirty");
+});
+
+QUnit.test("form marked dirty when file added", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+
+  var testFileInfo = {
+
+  }
+    
+  // Act I
+  $form.dirty();
+
+  // Assert I
+  assert.ok($form.dirty("isClean") === true, "form is clean when plugin initialized");
+  assert.ok($form.dirty("isDirty") === false, "form is not dirty when plugin initialized");
+
+  var fileInput = $form.find("input:file:first")[0];
+  assert.ok(fileInput.files instanceof FileList, "This should be a file input")
+  assert.ok(fileInput.files.length ===  0, "FileList should be empty")
+
+  // Act II
+  // TODO - stub file addition and test that form is now dirty
+  
 });

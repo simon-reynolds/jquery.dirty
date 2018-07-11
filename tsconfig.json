@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "allowJs": false,
+        //"module": "es6",
+        "target": "ES5",
+        "noImplicitAny": true
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

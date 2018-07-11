@@ -32,7 +32,6 @@
   },
   "homepage": "https://simontaite.github.io/jquery.dirty/",
   "devDependencies": {
-    "@types/jquery": "^3.3.4",
     "node-qunit-phantomjs": "^2.0.0",
     "qunitjs": "^2.4.1"
   }

@@ -26,6 +26,6 @@
     "jquery": ">=1.5"
   },
   "devDependencies": {
-    "qunit": "^2.0.1"
+    "qunit": "^2.4.1"
   }
 }

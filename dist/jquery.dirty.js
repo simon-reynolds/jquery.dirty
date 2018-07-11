@@ -88,15 +88,22 @@
             return $(el).is(":radio, :checkbox");
         },
 
+        isFileInput: function(el){
+            return $(el).is(":file")
+        },
+
         saveInitialValues: function() {
             var d = this;
             this.form.find("input, select, textarea").each(function(_, e) {
 
                 var isRadioOrCheckbox = d.isRadioOrCheckbox(e);
+                var isFile = d.isFileInput(e);
 
                 if (isRadioOrCheckbox) {
                     var isChecked = $(e).is(":checked") ? "checked" : "unchecked";
                     $(e).data(dataInitialValue, isChecked);
+                } else if(isFile){
+                    $(e).data(dataInitialValue, JSON.stringify(e.files))
                 } else {
                     $(e).data(dataInitialValue, $(e).val() || '');
                 }
@@ -143,6 +150,15 @@
             return currentValue !== initialValue;
         },
 
+        isFileInputDirty: function($field) {
+            var initialValue = $field.data(dataInitialValue);
+
+            var plainField = $field[0];
+            var currentValue = JSON.stringify(plainField.files);
+
+            return currentValue !== initialValue;
+        },
+
         isCheckboxDirty: function($field) {
             var initialValue = $field.data(dataInitialValue);
             var currentValue = $field.is(":checked") ? "checked" : "unchecked";
@@ -154,10 +170,19 @@
             var d = this;
             
             var el = e.target;
-            var isRadioOrCheckbox = d.isRadioOrCheckbox(e);
+            var isRadioOrCheckbox = d.isRadioOrCheckbox(el);
+            var isFile = d.isFileInput(el);
             var $el = $(el);
 
-            var thisIsDirty = isRadioOrCheckbox ? d.isCheckboxDirty($el) : d.isFieldDirty($el);
+            var thisIsDirty;
+            if (isRadioOrCheckbox) {
+                thisIsDirty = d.isCheckboxDirty($el);
+            } else if (isFile) {
+                thisIsDirty = d.isFileInputDirty($el);
+            } else {
+                thisIsDirty = d.isFieldDirty($el);
+            }
+            
             $el.data(dataIsDirty, thisIsDirty);
 
             var formIsDirty = thisIsDirty;
@@ -187,16 +212,12 @@
             this.isDirty = true;
             this.history[0] = this.history[1];
             this.history[1] = dirty;
-
-            this.onDirty();
         },
 
         setClean: function() {
             this.isDirty = false;
             this.history[0] = this.history[1];
             this.history[1] = clean;
-
-            this.onClean();
         },
 
         //Lets me know if the previous status of the form was dirty
@@ -243,7 +264,7 @@
 
     $.fn.dirty = function(options) {
 
-        if (typeof options === "string" && /^(isDirty|isClean|refreshEvents|resetForm|setAsClean|showDirtyFields)$/i.test(options)) {
+        if (typeof options === "string" && /^(isDirty|isClean|refreshEvents|resetForm|setAsClean|setAsDirty|showDirtyFields)$/i.test(options)) {
             //Check if we have an instance of dirty for this form
             // TODO: check if this is DOM or jQuery object
             var d = getSingleton($(this).attr("id"));

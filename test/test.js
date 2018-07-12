@@ -104,6 +104,32 @@ QUnit.test("form is marked as clean when setAsClean is called", function(assert)
   assert.ok(onCleanCalledCount === 1, "onClean was called");
 });
 
+QUnit.test("form is marked as clean when resetForm is called", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  var onCleanCalledCount = 0;
+  var options = {
+    onClean: function(){
+      onCleanCalledCount++;
+    },
+    fireEventsOnEachChange: false
+  };
+  $form.dirty(options);
+
+  // dirty the form
+  var $input = $form.find("input:first");
+  $input.val("test");
+  $input.trigger("change");
+  
+  // Act I
+  $form.dirty("resetForm");
+
+  // Assert
+  assert.ok($form.dirty("isClean") === true, "form is clean when resetForm called");
+  assert.ok($form.dirty("isDirty") === false, "form is not dirty when resetForm called");
+  assert.ok(onCleanCalledCount === 1, "onClean was called");
+});
+
 QUnit.test("form is marked as dirty when a radio button is selected", function(assert){
   // Arrange
   var $form = $("#testForm");
@@ -241,26 +267,26 @@ QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
   assert.ok(onDirtyCalledCount === 1, "onDirty was called");
 });
 
-QUnit.test("form marked dirty when file added", function(assert){
-  // Arrange
-  var $form = $("#testForm");
+// QUnit.test("form marked dirty when file added", function(assert){
+//   // Arrange
+//   var $form = $("#testForm");
 
-  var testFileInfo = {
+//   var testFileInfo = {
 
-  }
+//   }
     
-  // Act I
-  $form.dirty();
+//   // Act I
+//   $form.dirty();
 
-  // Assert I
-  assert.ok($form.dirty("isClean") === true, "form is clean when plugin initialized");
-  assert.ok($form.dirty("isDirty") === false, "form is not dirty when plugin initialized");
+//   // Assert I
+//   assert.ok($form.dirty("isClean") === true, "form is clean when plugin initialized");
+//   assert.ok($form.dirty("isDirty") === false, "form is not dirty when plugin initialized");
 
-  var fileInput = $form.find("input:file:first")[0];
-  assert.ok(fileInput.files instanceof FileList, "This should be a file input")
-  assert.ok(fileInput.files.length ===  0, "FileList should be empty")
+//   var fileInput = $form.find("input:file:first")[0];
+//   assert.ok(fileInput.files instanceof FileList, "This should be a file input")
+//   assert.ok(fileInput.files.length ===  0, "FileList should be empty")
 
-  // Act II
-  // TODO - stub file addition and test that form is now dirty
+//   // Act II
+//   // TODO - stub file addition and test that form is now dirty
   
-});
+// });

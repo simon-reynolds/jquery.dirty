@@ -168,32 +168,36 @@
 
         checkValues: function(e) {
             var d = this;
-            
-            var el = e.target;
-            var isRadioOrCheckbox = d.isRadioOrCheckbox(el);
-            var isFile = d.isFileInput(el);
-            var $el = $(el);
+            var formIsDirty = d.isDirty;
 
-            var thisIsDirty;
-            if (isRadioOrCheckbox) {
-                thisIsDirty = d.isCheckboxDirty($el);
-            } else if (isFile) {
-                thisIsDirty = d.isFileInputDirty($el);
-            } else {
-                thisIsDirty = d.isFieldDirty($el);
-            }
-            
-            $el.data(dataIsDirty, thisIsDirty);
+            this.form.find("input, select, textarea").each(function(_, el) {
+                var isRadioOrCheckbox = d.isRadioOrCheckbox(el);
+                var isFile = d.isFileInput(el);
+                var $el = $(el);
 
-            var formIsDirty = thisIsDirty;
+                var thisIsDirty;
+                if (isRadioOrCheckbox) {
+                    thisIsDirty = d.isCheckboxDirty($el);
+                } else if (isFile) {
+                    thisIsDirty = d.isFileInputDirty($el);
+                } else {
+                    thisIsDirty = d.isFieldDirty($el);
+                }
+                
+                $el.data(dataIsDirty, thisIsDirty);
+
+                formIsDirty |= thisIsDirty;                
+            });
 
             if (formIsDirty) {
                 d.setDirty();
             } else {
                 d.setClean();
             }
-
-            e.stopImmediatePropagation();
+                       
+            if (e) {
+                e.stopImmediatePropagation();
+            }
         },
 
         setDirty: function() {
@@ -242,12 +246,17 @@
 
                 var $e = $(e);
                 var isRadioOrCheckbox = d.isRadioOrCheckbox(e);
+                var isFile = d.isFileInput(e);
 
                 if (isRadioOrCheckbox) {
                     var initialCheckedState = $e.data(dataInitialValue);
                     var isChecked = initialCheckedState === "checked";
 
                     $e.prop("checked", isChecked);
+                } if(isFile) {
+                    e.value = "";
+                    $(e).data(dataInitialValue, JSON.stringify(e.files))
+
                 } else {
                     var value = $e.data(dataInitialValue);
                     $e.val(value);

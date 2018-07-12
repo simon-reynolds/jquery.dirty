@@ -67,6 +67,43 @@ QUnit.test("form is marked as dirty when modified", function(assert){
   assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
 });
 
+QUnit.test("form is marked as clean when setAsClean is called", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  var onDirtyCalledCount = 0;
+  var onCleanCalledCount = 0;
+  var options = {
+    onDirty: function(){
+      onDirtyCalledCount++;
+    },
+    onClean: function(){
+      onCleanCalledCount++;
+    },
+    fireEventsOnEachChange: false
+  };
+  $form.dirty(options);
+  
+  // Act I
+  var $input = $form.find("input:first");
+  $input.val("test");
+  $input.trigger("change");
+
+  // Assert I
+  assert.ok($form.dirty("isClean") === false, "form is not clean when form modified");
+  assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
+  assert.ok(onDirtyCalledCount === 1, "onDirty called");
+  assert.ok(onCleanCalledCount === 0, "onClean was not called");
+
+  // Act II
+  $form.dirty("setAsClean");
+
+  // Assert II
+  assert.ok($form.dirty("isClean") === true, "form is clean when setAsClean called");
+  assert.ok($form.dirty("isDirty") === false, "form is not dirty when setAsClean called");
+  assert.ok(onDirtyCalledCount === 1, "onDirty was not called");
+  assert.ok(onCleanCalledCount === 1, "onClean was called");
+});
+
 QUnit.test("form is marked as dirty when a radio button is selected", function(assert){
   // Arrange
   var $form = $("#testForm");
@@ -180,9 +217,17 @@ QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", functi
 QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
   // Arrange
   var $form = $("#testForm");
+
+  var onDirtyCalledCount = 0;
+  var options = {
+    onDirty: function(){
+      onDirtyCalledCount++;
+    },
+    fireEventsOnEachChange: true
+  };
   
   // Act I
-  $form.dirty();
+  $form.dirty(options);
 
   // Assert I
   assert.ok($form.dirty("isClean") === true, "form is clean when plugin initialized");
@@ -192,6 +237,8 @@ QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
   $form.dirty("setAsDirty");
   assert.ok($form.dirty("isClean") === false, "form is now dirty");
   assert.ok($form.dirty("isDirty") === true, "form is now dirty");
+
+  assert.ok(onDirtyCalledCount === 1, "onDirty was called");
 });
 
 QUnit.test("form marked dirty when file added", function(assert){

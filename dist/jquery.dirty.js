@@ -193,31 +193,27 @@
                 d.setClean();
             }
 
-            d.fireEvents();
             e.stopImmediatePropagation();
-        },
-
-        fireEvents: function() {
-
-            if (this.isDirty && (this.options.fireEventsOnEachChange || this.wasJustClean())) {
-                this.form.trigger("dirty");
-            }
-
-            if (!this.isDirty && (this.options.fireEventsOnEachChange || this.wasJustDirty())) {
-                this.form.trigger("clean");
-            }
         },
 
         setDirty: function() {
             this.isDirty = true;
             this.history[0] = this.history[1];
             this.history[1] = dirty;
+
+            if (this.options.fireEventsOnEachChange || this.wasJustClean()) {
+                this.form.trigger("dirty");
+            }
         },
 
         setClean: function() {
             this.isDirty = false;
             this.history[0] = this.history[1];
             this.history[1] = clean;
+
+            if (this.options.fireEventsOnEachChange || this.wasJustDirty()) {
+                this.form.trigger("clean");
+            }
         },
 
         //Lets me know if the previous status of the form was dirty

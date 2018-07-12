@@ -1,8 +1,5 @@
-"use strict";
 /// <reference path="./jquery.d.ts" />
 /// <reference path="./jquery.dirty.d.ts" />
-var _this = this;
-Object.defineProperty(exports, "__esModule", { value: true });
 /** The Dirty class */
 var Dirty = /** @class */ (function () {
     /**
@@ -147,16 +144,18 @@ var Dirty = /** @class */ (function () {
         };
         this.checkValues = function (e) {
             var elements = _this.getElementsInForm();
+            var formIsDirty = _this.isDirty;
             elements.forEach(function (el) {
                 var thisIsDirty = _this.isElementDirty(el);
                 $(el).data(_this.dataIsDirty, thisIsDirty);
-                if (thisIsDirty) {
-                    _this.setDirty();
-                }
-                else {
-                    _this.setClean();
-                }
+                formIsDirty = formIsDirty || thisIsDirty;
             });
+            if (formIsDirty) {
+                _this.setAsDirty();
+            }
+            else {
+                _this.setAsClean();
+            }
             if (e) {
                 e.stopImmediatePropagation();
             }
@@ -234,7 +233,6 @@ var Dirty = /** @class */ (function () {
     };
     return Dirty;
 }());
-exports.Dirty = Dirty;
 /*
  * Dirty
  * jquery plugin to detect when a form is modified
@@ -242,45 +240,60 @@ exports.Dirty = Dirty;
  * originally based on jquery.dirrty by Ruben Torres - https://github.com/rubentd/dirrty
  * Released under the MIT license
  */
-$.fn.dirty = function (options) {
-    _this.defaults = {
-        preventLeaving: false,
-        leavingMessage: "There are unsaved changes on this page which will be discarded if you continue.",
-        onDirty: $.noop,
-        onClean: $.noop,
-        fireEventsOnEachChange: false,
-    };
-    if ((options instanceof string) && /^(isDirty|isClean|refreshEvents|resetForm|setAsClean|setAsDirty|showDirtyFields)$/i.test(options)) {
-        // check if we have an instance of dirty for this form
-        // todo: check if this is DOM or jQuery object
-        var d = Dirty.getSingleton($(_this).attr("id"));
-        if (!d) {
-            d = new Dirty($(_this), options);
-            d.init();
-        }
-        var optionsLowerCase = options.toLowerCase();
-        switch (optionsLowerCase) {
-            case "isclean":
-                return !d.isDirty;
-            case "isdirty":
-                return d.isDirty;
-            case "refreshevents":
-                d.refreshEvents();
-            case "resetform":
-                d.resetForm();
-            case "setasclean":
-                return d.setAsClean();
-            case "setasdirty":
-                return d.setAsDirty();
-            case "showdirtyfields":
-                return d.showDirtyFields();
-        }
+(function (w, $) {
+    // no jQuery around
+    if (!$) {
+        return false;
     }
-    else if (typeof options === "object" || !options) {
-        return _this.each(function (_, e) {
-            options = $.extend({}, $.fn.dirty.defaults, options);
-            var dirty = new Dirty($(e), options);
-            dirty.init();
-        });
-    }
-};
+    Object.defineProperty($.fn, "dirty", {
+        value: function (options) {
+            function isString(o) {
+                return typeof o === "string";
+            }
+            if (isString(options)) {
+                var d = Dirty.getSingleton($(this).attr("id"));
+                if (d === null) {
+                    d = new Dirty($(this), Dirty.DefaultOptions);
+                    d.init();
+                }
+                var optionsLowerCase = options.toLowerCase();
+                switch (optionsLowerCase) {
+                    case "isclean":
+                        return !d.isDirty;
+                    case "isdirty":
+                        return d.isDirty;
+                    case "refreshevents":
+                        d.refreshEvents();
+                    case "resetform":
+                        d.resetForm();
+                    case "setasclean":
+                        return d.setAsClean();
+                    case "setasdirty":
+                        return d.setAsDirty();
+                    case "showdirtyfields":
+                        return d.showDirtyFields();
+                }
+            }
+            else {
+                // defaults
+                var defaults = Dirty.DefaultOptions;
+                // extend the defaults
+                var opts_1 = $.extend({}, defaults, options);
+                return this.each(function (_, e) {
+                    var options = $.extend({}, defaults, opts_1);
+                    var dirty = new Dirty($(e), options);
+                    dirty.init();
+                });
+            }
+        },
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+    Object.defineProperty($.fn.dirty, "defaults", {
+        value: Dirty.DefaultOptions,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+})(window, jQuery);

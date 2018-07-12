@@ -2,9 +2,15 @@
     "compilerOptions": {
         "outDir": "./dist",
         "allowJs": false,
-        //"module": "es6",
         "target": "ES5",
-        "noImplicitAny": true
+        "module": "amd",
+        //"strict": true,
+        "noImplicitAny": true,
+        "lib": [
+            "es2016",
+            "dom",
+            "es5"
+        ]
     },
     "include": [
         "./src/**/*"

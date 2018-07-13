@@ -31,20 +31,15 @@ class Dirty {
     }
 
     public static DefaultOptions:JqueryDirtyOptions = {
-            preventLeaving: false,
-            leavingMessage: "There are unsaved changes on this page which will be discarded if you continue.",
-            onDirty: $.noop, // this function is fired when the form gets dirty
-            onClean: $.noop, // this funciton is fired when the form gets clean again
-            fireEventsOnEachChange: false, // fire onDirty/onClean on each modification of the form
+        preventLeaving: false,
+        leavingMessage: "There are unsaved changes on this page which will be discarded if you continue.",
+        onDirty: $.noop, // this function is fired when the form gets dirty
+        onClean: $.noop, // this funciton is fired when the form gets clean again
+        fireEventsOnEachChange: false, // fire onDirty/onClean on each modification of the form
     };
 
     public static getSingleton = (id:string):Dirty => {
-        Dirty.singleDs.forEach(e => {
-            if (e.id === id) {
-                return e;
-            }
-        });
-        return null;
+        return Dirty.singleDs.find((d, i) => d.id === id);
     }
 
     public init = () => {
@@ -262,7 +257,6 @@ class Dirty {
     }
 
     public setAsDirty = () => {
-        this.saveInitialValues();
         this.setDirty();
     }
 
@@ -314,7 +308,7 @@ class Dirty {
 
                 var d:Dirty = Dirty.getSingleton($(this).attr("id"));
 
-                if (d === null) {
+                if (d === undefined) {
                     d = new Dirty($(this), Dirty.DefaultOptions);
                     d.init();
                 }
@@ -336,6 +330,8 @@ class Dirty {
                     return d.setAsDirty();
                 case "showdirtyfields":
                     return d.showDirtyFields();
+                default:
+                    console.log("Unknown option: " + options);
                 }
             } else {
                 // defaults

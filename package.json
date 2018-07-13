@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node-qunit-phantomjs test/test.html"
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,15 @@
   },
   "homepage": "https://simontaite.github.io/jquery.dirty/",
   "devDependencies": {
+    "jquery": "^3.3.1",
+    "karma": "^2.0.4",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-qunit": "^2.1.0",
     "node-qunit-phantomjs": "^2.0.0",
-    "qunitjs": "^2.4.1"
+    "phantomjs-polyfill-find": "github:ptim/phantomjs-polyfill-find",
+    "qunit": "^2.6.1"
+  },
+  "peerDependencies": {
+    "jquery": ">= 1.11.0 < 4"
   }
 }

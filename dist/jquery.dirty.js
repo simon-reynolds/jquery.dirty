@@ -183,7 +183,6 @@ var Dirty = /** @class */ (function () {
             _this.setClean();
         };
         this.setAsDirty = function () {
-            _this.saveInitialValues();
             _this.setDirty();
         };
         this.resetForm = function () {
@@ -224,12 +223,7 @@ var Dirty = /** @class */ (function () {
         fireEventsOnEachChange: false,
     };
     Dirty.getSingleton = function (id) {
-        Dirty.singleDs.forEach(function (e) {
-            if (e.id === id) {
-                return e;
-            }
-        });
-        return null;
+        return Dirty.singleDs.find(function (d, i) { return d.id === id; });
     };
     return Dirty;
 }());
@@ -252,7 +246,7 @@ var Dirty = /** @class */ (function () {
             }
             if (isString(options)) {
                 var d = Dirty.getSingleton($(this).attr("id"));
-                if (d === null) {
+                if (d === undefined) {
                     d = new Dirty($(this), Dirty.DefaultOptions);
                     d.init();
                 }
@@ -272,6 +266,8 @@ var Dirty = /** @class */ (function () {
                         return d.setAsDirty();
                     case "showdirtyfields":
                         return d.showDirtyFields();
+                    default:
+                        console.log("Unknown option: " + options);
                 }
             }
             else {

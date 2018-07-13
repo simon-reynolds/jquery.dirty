@@ -1,16 +1,33 @@
-/// <reference path="../bower_components/jquery/dist/jquery.min.js" />
-/// <reference path="../bower_components/qunit/qunit/qunit.js" />
-/// <reference path="../dist/jquery.dirty.js" />
+var template =
+'<form id="testForm">' +
+'<label>First Name</label>' +
+'<input type="text" id="firstName" /><br />' +
+'<label>Last Name</label>' +
+'<input type="text" id="lastName" /><br />' +
+'<label>Gender</label>' +
+'<input type="radio" name="gender" value="Male"/> Male' +
+'<input type="radio" name="gender" value="Female"/> Female' +
+'<input type="radio" name="gender" value="Other"/> Other<br />' +
+'<label>Hobbies</label>' +
+'<input type="checkbox" name="hobbies" value="eat"/> Eat' +
+'<input type="checkbox" name="hobbies" value="drink"/> Drink' +
+'<input type="checkbox" name="hobbies" value="sleep"/> Sleep' +
+'<input type="checkbox" name="hobbies" value="repeat"/> Repeat <br />' +
+'<label>File</label>' +
+'<input type="file" id="files" /><br />' +
+'<input type="submit" value="Submit" />' +
+'</form>'
 
 QUnit.module("jquery.dirty", {
     beforeEach: function () {
         // add form to page from template
-        var form = $("#formTemplate").html();
+        var form = $(template);
         $("#qunit-fixture").html(form);
     },
     afterEach: function () {
         // clear form
         $("#qunit-fixture").html("");
+        Dirty.singleDs.splice(0, Dirty.singleDs.length);
     }
 });
 

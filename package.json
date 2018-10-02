@@ -33,7 +33,7 @@
   "homepage": "https://simontaite.github.io/jquery.dirty/",
   "devDependencies": {
     "jquery": "^3.3.1",
-    "karma": "^2.0.4",
+    "karma": "^3.0.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-qunit": "^2.1.0",
     "node-qunit-phantomjs": "^2.0.0",

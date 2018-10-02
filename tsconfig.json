@@ -4,7 +4,7 @@
         "allowJs": false,
         "target": "ES5",
         "module": "amd",
-        //"strict": true,
+        "strict": true,
         "noImplicitAny": true,
         "lib": [
             "es2016",

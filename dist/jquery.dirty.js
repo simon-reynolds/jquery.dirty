@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path="./jquery.d.ts" />
 /// <reference path="./jquery.dirty.d.ts" />
 /** The Dirty class */
@@ -54,8 +55,8 @@ var Dirty = /** @class */ (function () {
             _this.form.find("input, select, textarea").on("change.dirty click.dirty keyup.dirty keydown.dirty blur.dirty", function (e) {
                 _this.checkValues(e);
             });
-            _this.form.on("dirty", function () { return _this.options.onDirty(); });
-            _this.form.on("clean", function () { return _this.options.onClean(); });
+            _this.form.on("dirty", function () { return _this.options.onDirty ? _this.options.onDirty() : $.noop(); });
+            _this.form.on("clean", function () { return _this.options.onClean ? _this.options.onClean() : $.noop(); });
         };
         this.clearNamespacedEvents = function () {
             _this.form.find("input, select, textarea").off("change.dirty click.dirty keyup.dirty keydown.dirty blur.dirty");
@@ -210,7 +211,11 @@ var Dirty = /** @class */ (function () {
         this.isDirty = false;
         this.options = options;
         this.history = [this.clean, this.clean]; // keep track of last statuses
-        this.id = $(form).attr("id");
+        var id = form.attr("id");
+        if (id === undefined) {
+            throw "An id must be specified on the form";
+        }
+        this.id = id;
         this.submitting = false;
         Dirty.singleDs.push(this);
     }
@@ -223,7 +228,11 @@ var Dirty = /** @class */ (function () {
         fireEventsOnEachChange: false,
     };
     Dirty.getSingleton = function (id) {
-        return Dirty.singleDs.find(function (d, i) { return d.id === id; });
+        var d = Dirty.singleDs.find(function (d) { return d.id === id; });
+        if (d === undefined) {
+            throw "Could not find instance with id of '" + id + "'";
+        }
+        return d;
     };
     return Dirty;
 }());
@@ -245,7 +254,11 @@ var Dirty = /** @class */ (function () {
                 return typeof o === "string";
             }
             if (isString(options)) {
-                var d = Dirty.getSingleton($(this).attr("id"));
+                var id = $(this).attr("id");
+                if (id === undefined) {
+                    throw "An id must be specified on the form";
+                }
+                var d = Dirty.getSingleton(id);
                 if (d === undefined) {
                     d = new Dirty($(this), Dirty.DefaultOptions);
                     d.init();

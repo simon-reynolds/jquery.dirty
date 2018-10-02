@@ -25,7 +25,13 @@ class Dirty {
         this.isDirty = false;
         this.options = options;
         this.history = [this.clean, this.clean]; // keep track of last statuses
-        this.id = $(form).attr("id");
+
+        var id = form.attr("id");
+        if (id === undefined) {
+            throw "An id must be specified on the form";                    
+        }
+        this.id = id;
+
         this.submitting = false;
         Dirty.singleDs.push(this);
     }
@@ -39,7 +45,11 @@ class Dirty {
     };
 
     public static getSingleton = (id:string):Dirty => {
-        return Dirty.singleDs.find((d, i) => d.id === id);
+        var d = Dirty.singleDs.find(d => d.id === id);
+        if (d === undefined) {
+            throw "Could not find instance with id of '" + id + "'";
+        }
+        return d;
     }
 
     public init = () => {
@@ -98,8 +108,8 @@ class Dirty {
             this.checkValues(e);
         });
 
-        this.form.on("dirty", () => this.options.onDirty());
-        this.form.on("clean", () => this.options.onClean());
+        this.form.on("dirty", () => this.options.onDirty ? this.options.onDirty() : $.noop());
+        this.form.on("clean", () => this.options.onClean ? this.options.onClean() : $.noop());
     }
 
     public clearNamespacedEvents = () => {
@@ -144,7 +154,7 @@ class Dirty {
 
     public isFieldDirty = (field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
 
-        let $field:JQuery = $(field);
+        let $field:JQuery<Element> = $(field);
 
         // explicitly check for null/undefined here as value may be `false`, so ($field.data(dataInitialValue) || '') would not work
         let initialValue:string = $field.data(this.dataInitialValue) as string;
@@ -263,7 +273,7 @@ class Dirty {
     public resetForm = () => {
         this.getElementsInForm().forEach((e:HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
 
-            let $e:JQuery<HTMLElement> = $(e);
+            let $e:JQuery<Element> = $(e);
             let isRadioOrCheckbox:boolean = this.isRadioOrCheckbox(<HTMLInputElement>e);
             let isFileInput:boolean = this.isFileInput(<HTMLInputElement>e);
 
@@ -300,13 +310,18 @@ class Dirty {
     Object.defineProperty($.fn, "dirty", {
         value: function(this:JQuery, options?:(JqueryDirtyOptions|string)):any {
 
-            function isString(o:JqueryDirtyOptions|string): o is string {
+            function isString(o:JqueryDirtyOptions|string|undefined): o is string {
                 return typeof o === "string";
             }
 
             if (isString(options)) {
+                var id = $(this).attr("id");
 
-                var d:Dirty = Dirty.getSingleton($(this).attr("id"));
+                if (id === undefined) {
+                    throw "An id must be specified on the form";                    
+                }
+
+                var d:Dirty = Dirty.getSingleton(id);
 
                 if (d === undefined) {
                     d = new Dirty($(this), Dirty.DefaultOptions);

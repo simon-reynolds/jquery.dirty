@@ -1,96 +1,106 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Jquery.dirty : A simple jquery plugin for checking if a form has been modified">
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="description" content="Jquery.dirty : A simple jquery plugin for checking if a form has been modified">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Jquery.dirty</title>
-  </head>
+  <title>Jquery.dirty</title>
+</head>
 
-  <body>
+<body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/simontaite/jquery.dirty">View on GitHub</a>
+  <!-- HEADER -->
+  <div id="header_wrap" class="outer">
+    <header class="inner">
+      <a id="forkme_banner" href="https://github.com/simontaite/jquery.dirty">View on GitHub</a>
 
-          <h1 id="project_title">Jquery.dirty</h1>
-          <h2 id="project_tagline">A simple jquery plugin for checking if a form has been modified</h2>
+      <h1 id="project_title">Jquery.dirty</h1>
+      <h2 id="project_tagline">A simple jquery plugin for checking if a form has been modified</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/simontaite/jquery.dirty/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/simontaite/jquery.dirty/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a id="jquerydirty" class="anchor" href="#jquerydirty" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>jquery.dirty</h1>
-
-<p>A jQuery plugin to determine when a form has been modified (dirtied) and act accordingly</p>
-
-<p>All state information about the form is held in the data object for the form rather than adding <code>data-</code> attributes to the DOM</p>
-
-<h1>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
-
-<p><code>$("#myForm").dirty();</code></p>
-
-<h1>
-<a id="options" class="anchor" href="#options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Options</h1>
-
-<ul>
-<li>
-<p><em>preventLeaving</em> - boolean indicating whether on not to show a warning if the user attempts to navigate away from the form with pending changes</p>
-
-<ul>
-<li>Default: false</li>
-</ul>
-</li>
-<li>
-<p><em>leavingMessage</em> - message to display when <em>preventLeaving</em> is true</p>
-
-<ul>
-<li>Default: 'There are unsaved changes on this page which will be discarded if you continue.'</li>
-</ul>
-</li>
-<li><p><em>onDirty</em> - function called when form is modified</p></li>
-<li><p><em>onClean</em> - function called when form is restored to original state</p></li>
-</ul>
-
-<h1>
-<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Methods</h1>
-
-<p><code>$("#myForm").dirty("isDirty");</code> returns true if a form has been modified</p>
-
-<p><code>$("#myForm").dirty("isClean");</code> returns true if a form has not been modified</p>
-
-<p><code>$("#myForm").dirty("refreshEvents");</code> remove and reapply events. Can be used if content is dynamically added to form</p>
-
-<p><code>$("#myForm").dirty("resetForm");</code> reset the form to the original state when <code>$("#myForm").dirty();</code> was called</p>
-
-<p><code>$("#myForm").dirty("setAsClean");</code> set the current state of the formas the 'clean' state. Calling <code>resetForm</code> after this will restore the form to the state when <code>setAsClean</code>was called</p>
-
-<p><code>$("#myForm").dirty("showDirtyFields");</code> returns jQuery array of all modified fields in the form</p>
+      <section id="downloads">
+        <a class="zip_download_link" href="https://github.com/simontaite/jquery.dirty/zipball/master">Download this
+          project as a .zip file</a>
+        <a class="tar_download_link" href="https://github.com/simontaite/jquery.dirty/tarball/master">Download this
+          project as a tar.gz file</a>
       </section>
-    </div>
+    </header>
+  </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Jquery.dirty maintained by <a href="https://github.com/simontaite">simontaite</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+  <!-- MAIN CONTENT -->
+  <div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+      <h1>
+        <a id="jquerydirty" class="anchor" href="#jquerydirty" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>jquery.dirty</h1>
 
-    
+      <p>A jQuery plugin to determine when a form has been modified (dirtied) and act accordingly</p>
 
-  </body>
+      <p>All state information about the form is held in the data object for the form rather than adding <code>data-</code>
+        attributes to the DOM</p>
+
+      <h1>
+        <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+      <p><code>$("#myForm").dirty();</code></p>
+
+      <h1>
+        <a id="options" class="anchor" href="#options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Options</h1>
+
+      <ul>
+        <li>
+          <p><em>preventLeaving</em> - boolean indicating whether on not to show a warning if the user attempts to
+            navigate away from the form with pending changes</p>
+
+          <ul>
+            <li>Default: false</li>
+          </ul>
+        </li>
+        <li>
+          <p><em>leavingMessage</em> - message to display when <em>preventLeaving</em> is true</p>
+
+          <ul>
+            <li>Default: 'There are unsaved changes on this page which will be discarded if you continue.'</li>
+          </ul>
+        </li>
+        <li>
+          <p><em>onDirty</em> - function called when form is modified</p>
+        </li>
+        <li>
+          <p><em>onClean</em> - function called when form is restored to original state</p>
+        </li>
+      </ul>
+
+      <h1>
+        <a id="methods" class="anchor" href="#methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Methods</h1>
+
+      <p><code>$("#myForm").dirty("isDirty");</code> returns true if a form has been modified</p>
+
+      <p><code>$("#myForm").dirty("isClean");</code> returns true if a form has not been modified</p>
+
+      <p><code>$("#myForm").dirty("refreshEvents");</code> remove and reapply events. Can be used if content is
+        dynamically added to form</p>
+
+      <p><code>$("#myForm").dirty("resetForm");</code> reset the form to the original state when <code>$("#myForm").dirty();</code>
+        was called</p>
+
+      <p><code>$("#myForm").dirty("setAsClean");</code> set the current state of the formas the 'clean' state. Calling
+        <code>resetForm</code> after this will restore the form to the state when <code>setAsClean</code>was called</p>
+
+      <p><code>$("#myForm").dirty("showDirtyFields");</code> returns jQuery array of all modified fields in the form</p>
+    </section>
+  </div>
+
+  <!-- FOOTER  -->
+  <div id="footer_wrap" class="outer">
+    <footer class="inner">
+      <p class="copyright">Jquery.dirty maintained by <a href="https://github.com/simontaite">simontaite</a></p>
+      <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+  </div>
+
+</body>
+
 </html>

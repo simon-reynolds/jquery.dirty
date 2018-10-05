@@ -368,7 +368,13 @@ Full-Width Styles
   background: #212121;
 }
 
+.inline {
+  display: inline;
+}
 
+.mr20 {
+  margin-right: 20px;
+}
 
 /*******************************************************************************
 Small Device Styles

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="description" content="Jquery.dirty : A simple jquery plugin for checking if a form has been modified">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/simontaite/jquery.dirty/0.7.2/dist/jquery.dirty.js"></script>
+
+  <title>Jquery.dirty</title>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div id="header_wrap" class="outer">
+    <header class="inner container">
+      <a id="forkme_banner" href="https://github.com/simontaite/jquery.dirty">View on GitHub</a>
+
+      <h1 id="project_title">Jquery.dirty</h1>
+      <h2 id="project_tagline">A simple jquery plugin for checking if a form has been modified</h2>
+
+      <section id="downloads">
+        <a class="zip_download_link" href="https://github.com/simontaite/jquery.dirty/zipball/master">Download this
+          project as a .zip file</a>
+        <a class="tar_download_link" href="https://github.com/simontaite/jquery.dirty/tarball/master">Download this
+          project as a tar.gz file</a>
+      </section>
+    </header>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner container">
+      <h1>jQuery.dirty</h1>
+
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card darken-1">
+            <div class="card-content">
+              <span class="card-title">Basic form</span>
+              <form id="basicForm">
+                <label>First Name</label>
+                <input type="text" id="firstName" /><br />
+
+                <label>Last Name</label>
+                <input type="text" id="lastName" /><br />
+
+                <label>Are you decisive?</label>
+                <div>
+                  <label class="inline mr20">
+                    <input class="with-gap" name="decisive" type="radio" value="Yes" />
+                    <span>Yes</span>
+                  </label>
+
+                  <label class="inline mr20">
+                    <input class="with-gap" name="decisive" type="radio" value="No" />
+                    <span>No</span>
+                  </label>
+
+                  <label class="inline mr20">
+                    <input class="with-gap" name="decisive" type="radio" value="Maybe" />
+                    <span>Maybe</span>
+                  </label>
+                </div>
+
+                <label>Hobbies</label>
+                <div>
+                  <label class="inline mr20">
+                    <input class="with-gap" name="hobbies" type="checkbox" value="eat" />
+                    <span>Eat</span>
+                  </label>
+
+                  <label class="inline mr20">
+                    <input class="with-gap" name="hobbies" type="checkbox" value="drink" />
+                    <span>Drink</span>
+                  </label>
+
+                  <label class="inline mr20">
+                    <input class="with-gap" name="hobbies" type="checkbox" value="sleep" />
+                    <span>Sleep</span>
+                  </label>
+
+                  <label class="inline mr20">
+                    <input class="with-gap" name="hobbies" type="checkbox" value="repeat" />
+                    <span>Repeat</span>
+                  </label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6">
+          <div class="card darken-1">
+            <div class="card-content">
+              <span class="card-title">Basic form state:</span>
+              <div>
+                <p>The form is <span id="basicFormState">clean</span></p>
+
+                <p id="basicFormNameDirty" style="display: none;">The dirty fields are <span id="basicFormListDirtyFields"></span></p>
+
+                <button id="basicFormReset" class="btn waves-effect waves-light" type="button" name="reset">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- FOOTER  -->
+  <div id="footer_wrap" class="outer">
+    <footer class="inner container">
+      <p class="copyright">Jquery.dirty maintained by <a href="https://github.com/simontaite">simontaite</a></p>
+      <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+      M.AutoInit();
+
+      var basicFormOptions = {
+        onDirty: function () {
+          var isDirty = $("#basicForm").dirty("isDirty");
+          $("#basicFormState").text(isDirty ? "dirty" : "clean");
+
+          var dirtyFields = Array.from($("#basicForm").dirty("showDirtyFields")).map(e => e.name + ": " + e.value)
+          $("#basicFormListDirtyFields").text(dirtyFields.join(", "));
+          $("#basicFormNameDirty").show();
+        },
+        onClean: function () {
+          var isClean = $("#basicForm").dirty("isClean");
+          $("#basicFormState").text(isClean ? "clean" : "dirty");
+          $("#basicFormNameDirty").hide();
+        },
+        fireEventsOnEachChange: true
+      };
+
+      $("#basicForm").dirty(basicFormOptions);
+
+      $("#basicFormReset").on("click", function(){
+        $("#basicForm").dirty("resetForm");
+      })
+
+    });
+
+  </script>
+
+</body>
+
+</html>

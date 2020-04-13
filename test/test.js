@@ -104,6 +104,33 @@ QUnit.test("form is marked as clean when setAsClean is called", function(assert)
   assert.ok(onCleanCalledCount === 1, "onClean was called");
 });
 
+QUnit.test("form is marked as clean when changes are reverted", function(assert){
+  // Arrange
+  var $form = $("#testForm");
+  var onCleanCalledCount = 0;
+  var options = {
+    onClean: function(){
+      onCleanCalledCount++;
+    },
+    fireEventsOnEachChange: false
+  };
+  $form.dirty(options);
+
+  // dirty the form
+  var $input = $form.find("input:first");
+  $input.val("test");
+  $input.trigger("change");
+
+  // Act I
+  $input.val("");
+  $input.trigger("change");
+
+  // Assert
+  assert.ok($form.dirty("isClean") === true, "form is clean when resetForm called");
+  assert.ok($form.dirty("isDirty") === false, "form is not dirty when resetForm called");
+  assert.ok(onCleanCalledCount === 1, "onClean was called");
+});
+
 QUnit.test("form is marked as clean when resetForm is called", function(assert){
   // Arrange
   var $form = $("#testForm");

@@ -168,7 +168,7 @@
 
         checkValues: function(e) {
             var d = this;
-            var formIsDirty = d.isDirty;
+            var formIsDirty = false;
 
             this.form.find("input, select, textarea").each(function(_, el) {
                 var isRadioOrCheckbox = d.isRadioOrCheckbox(el);

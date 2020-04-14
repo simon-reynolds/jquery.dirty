@@ -1,5 +1,5 @@
-/// <reference path="../bower_components/jquery/dist/jquery.min.js" />
-/// <reference path="../bower_components/qunit/qunit/qunit.js" />
+/// <reference path="../node_modules/jquery/dist/jquery.min.js" />
+/// <reference path="../node_modules/qunitjs/qunit/qunit.js" />
 /// <reference path="../dist/jquery.dirty.js" />
 
 QUnit.module("jquery.dirty", {

@@ -1,4 +1,4 @@
-/// <reference path="./jquery.d.ts" />
+/// <reference path="../node_modules/@types/jquery/JQuery.d.ts" />
 /// <reference path="./jquery.dirty.d.ts" />
 
 /** The Dirty class */
@@ -213,10 +213,10 @@ class Dirty {
 
     }
 
-    public checkValues = (e?:JQuery.Event<HTMLElement, null>) => {
+    public checkValues = (e?:JQuery.Event) => {
 
         let elements:(HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[] = this.getElementsInForm();
-        let formIsDirty:boolean = this.isDirty;
+        let formIsDirty:boolean = false;
 
         elements.forEach((el) => {
             let thisIsDirty:boolean = this.isElementDirty(el);

@@ -1,42 +1,49 @@
+import * as dirty from '../dist/jquery.dirty.js'
+
 var template =
-'<form id="testForm">' +
-'<label>First Name</label>' +
-'<input type="text" id="firstName" /><br />' +
-'<label>Last Name</label>' +
-'<input type="text" id="lastName" /><br />' +
-'<label>Gender</label>' +
-'<input type="radio" name="gender" value="Male"/> Male' +
-'<input type="radio" name="gender" value="Female"/> Female' +
-'<input type="radio" name="gender" value="Other"/> Other<br />' +
-'<label>Hobbies</label>' +
-'<input type="checkbox" name="hobbies" value="eat"/> Eat' +
-'<input type="checkbox" name="hobbies" value="drink"/> Drink' +
-'<input type="checkbox" name="hobbies" value="sleep"/> Sleep' +
-'<input type="checkbox" name="hobbies" value="repeat"/> Repeat <br />' +
-'<label>File</label>' +
-'<input type="file" id="files" /><br />' +
-'<input type="submit" value="Submit" />' +
-'</form>'
+  `<form id=\\"testForm\\">
+  <label>First Name</label>
+  <input type=\\"text\\" id=\\"firstName\\" />
+  <br />
+  <label>Last Name</label>
+  <input type=\\"text\\" id=\\"lastName\\" />
+  <br />
+  <label>Gender</label>
+  <input type=\\"radio\\" name=\\"gender\\" value=\\"Male\\"/> Male
+  <input type=\\"radio\\" name=\\"gender\\" value=\\"Female\\"/> Female
+  <input type=\\"radio\\" name=\\"gender\\" value=\\"Other\\"/> Other
+  <br />
+  <label>Hobbies</label>
+  <input type=\\"checkbox\\" name=\\"hobbies\\" value=\\"eat\\"/> Eat
+  <input type=\\"checkbox\\" name=\\"hobbies\\" value=\\"drink\\"/> Drink
+  <input type=\\"checkbox\\" name=\\"hobbies\\" value=\\"sleep\\"/> Sleep
+  <input type=\\"checkbox\\" name=\\"hobbies\\" value=\\"repeat\\"/> Repeat
+  <br />
+  <label>File</label>
+  <input type=\\"file\\" id=\\"files\\" />
+  <br />
+  <input type=\\"submit\\" value=\\"Submit\\" />
+  </form>`
 
 QUnit.module("jquery.dirty", {
-    beforeEach: function () {
-        // add form to page from template
-        var form = $(template);
-        $("#qunit-fixture").html(form);
-    },
-    afterEach: function () {
-        // clear form
-        $("#qunit-fixture").html("");
-        Dirty.singleDs.splice(0, Dirty.singleDs.length);
-    }
+  beforeEach: function () {
+    // add form to page from template
+    var form = $(template);
+    $("#qunit-fixture").html(form);
+  },
+  afterEach: function () {
+    // clear form
+    $("#qunit-fixture").html("");
+    Dirty.singleDs.splice(0, Dirty.singleDs.length);
+  }
 });
 
-QUnit.test("jQuery.dirty is referenced", function(assert) {
+QUnit.test("jQuery.dirty is referenced", function (assert) {
   assert.ok($.fn.dirty !== undefined, "jQuery.dirty is defined");
-  assert.ok(typeof($.fn.dirty) === "function", "jQuery.dirty is a function"); 
+  assert.ok(typeof ($.fn.dirty) === "function", "jQuery.dirty is a function");
 });
 
-QUnit.test("default values exist", function(assert){
+QUnit.test("default values exist", function (assert) {
 
   assert.ok($.fn.dirty.defaults !== undefined, "default values are defined");
   assert.ok($.fn.dirty.defaults.preventLeaving !== undefined, "default preaventLeaving is defined");
@@ -47,20 +54,20 @@ QUnit.test("default values exist", function(assert){
 
 });
 
-QUnit.test("default values are as expected", function(assert){
+QUnit.test("default values are as expected", function (assert) {
 
   assert.ok($.fn.dirty.defaults.preventLeaving === false, "default preaventLeaving value is as expected");
-  assert.ok(typeof($.fn.dirty.defaults.leavingMessage === "object"), "default leavingMessage value is as expected");
-  assert.ok(typeof($.fn.dirty.defaults.onDirty === "function"), "default onDirty value is as expected");
-  assert.ok(typeof($.fn.dirty.defaults.onClean === "function"), "default onClean value is as expected");
+  assert.ok(typeof ($.fn.dirty.defaults.leavingMessage === "object"), "default leavingMessage value is as expected");
+  assert.ok(typeof ($.fn.dirty.defaults.onDirty === "function"), "default onDirty value is as expected");
+  assert.ok(typeof ($.fn.dirty.defaults.onClean === "function"), "default onClean value is as expected");
   assert.ok($.fn.dirty.defaults.fireEventsOnEachChange === false, "default fireEventsOnEachChange is defined");
 
 });
 
-QUnit.test("form is marked as clean when plugin initialized", function(assert){
+QUnit.test("form is marked as clean when plugin initialized", function (assert) {
   // Arrange
   var $form = $("#testForm");
-  
+
   // Act
   $form.dirty();
 
@@ -69,11 +76,11 @@ QUnit.test("form is marked as clean when plugin initialized", function(assert){
   assert.ok($form.dirty("isDirty") === false, "form is not dirty when plugin initialized");
 });
 
-QUnit.test("form is marked as dirty when modified", function(assert){
+QUnit.test("form is marked as dirty when modified", function (assert) {
   // Arrange
   var $form = $("#testForm");
   $form.dirty();
-  
+
   // Act
   var $input = $form.find("input:first");
   $input.val("test");
@@ -84,11 +91,11 @@ QUnit.test("form is marked as dirty when modified", function(assert){
   assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
 });
 
-QUnit.test("form is marked as dirty when a radio button is selected", function(assert){
+QUnit.test("form is marked as dirty when a radio button is selected", function (assert) {
   // Arrange
   var $form = $("#testForm");
   $form.dirty();
-  
+
   // Act
   var $input = $form.find("input:radio:first");
   $input.prop("checked", true);
@@ -99,11 +106,11 @@ QUnit.test("form is marked as dirty when a radio button is selected", function(a
   assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
 });
 
-QUnit.test("form is marked as dirty when a checkbox button is selected", function(assert){
+QUnit.test("form is marked as dirty when a checkbox button is selected", function (assert) {
   // Arrange
   var $form = $("#testForm");
   $form.dirty();
-  
+
   // Act
   var $input = $form.find("input:checkbox:first");
   $input.prop("checked", true);
@@ -114,11 +121,11 @@ QUnit.test("form is marked as dirty when a checkbox button is selected", functio
   assert.ok($form.dirty("isDirty") === true, "form is dirty when form modified");
 });
 
-QUnit.test("showDirtyFields returns correct fields", function(assert){
+QUnit.test("showDirtyFields returns correct fields", function (assert) {
   // Arrange
   var $form = $("#testForm");
   $form.dirty();
-  
+
   // Act I
   var $text = $form.find("input:text:first");
   $text.val("test").trigger("change");
@@ -139,18 +146,18 @@ QUnit.test("showDirtyFields returns correct fields", function(assert){
 });
 
 
-QUnit.test("onDirty only fired once when fireEventsOnEachChange is false", function(assert){
+QUnit.test("onDirty only fired once when fireEventsOnEachChange is false", function (assert) {
   // Arrange
   var $form = $("#testForm");
   var onDirtyCalledCount = 0;
   var options = {
-    onDirty: function(){
+    onDirty: function () {
       onDirtyCalledCount++;
     },
     fireEventsOnEachChange: false
   };
   $form.dirty(options);
-  
+
   // Act I
   var $text = $form.find("input:text:first");
   $text.val("test").trigger("change");
@@ -167,19 +174,19 @@ QUnit.test("onDirty only fired once when fireEventsOnEachChange is false", funct
   assert.ok(onDirtyCalledCount === 1, "onDirty should not have been called here. Value should be 1, was " + onDirtyCalledCount);
 });
 
-QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", function(assert){
+QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", function (assert) {
   // Arrange
   var $form = $("#testForm");
   var onDirtyCalledCount = 0;
   var options = {
-    onDirty: function(){
+    onDirty: function () {
       onDirtyCalledCount++;
     },
     fireEventsOnEachChange: true
   };
 
-  $form.dirty(options);  
-  
+  $form.dirty(options);
+
   // Act I
   var $text = $form.find("input:text:first");
   $text.val("test").trigger("change");
@@ -194,10 +201,10 @@ QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", functi
   assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly. Value should be 1, was " + onDirtyCalledCount);
 });
 
-QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
+QUnit.test("form is marked as dirty when setAsDirty called", function (assert) {
   // Arrange
   var $form = $("#testForm");
-  
+
   // Act I
   $form.dirty();
 
@@ -211,14 +218,14 @@ QUnit.test("form is marked as dirty when setAsDirty called", function(assert){
   assert.ok($form.dirty("isDirty") === true, "form is now dirty");
 });
 
-QUnit.test("form marked dirty when file added", function(assert){
+QUnit.test("form marked dirty when file added", function (assert) {
   // Arrange
   var $form = $("#testForm");
 
   var testFileInfo = {
 
   }
-    
+
   // Act I
   $form.dirty();
 
@@ -228,9 +235,9 @@ QUnit.test("form marked dirty when file added", function(assert){
 
   var fileInput = $form.find("input:file:first")[0];
   assert.ok(fileInput.files instanceof FileList, "This should be a file input")
-  assert.ok(fileInput.files.length ===  0, "FileList should be empty")
+  assert.ok(fileInput.files.length === 0, "FileList should be empty")
 
   // Act II
   // TODO - stub file addition and test that form is now dirty
-  
+
 });

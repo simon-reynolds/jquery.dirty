@@ -6,13 +6,6 @@ interface JqueryDirtyOptions {
     fireEventsOnEachChange?: boolean
 }
 
-// interface JqueryDirtyGlobalOptions {
-//     /**
-//      * Global options of the plugin.
-//      */
-//     DefaultOptions: JqueryDirtyOptions;
-//   }
-
 interface JqueryDirtyFunction {
     options : JqueryDirtyOptions
 }

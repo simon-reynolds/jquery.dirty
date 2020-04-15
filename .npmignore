@@ -1,9 +1,10 @@
-#################   .gitignore    #################
+#################   .npmignore    #################
 #################   data files    #################
 data/
 #################  distro files   #################
 site/
 #################  unit testing   #################
+coverage/
 .nyc_output/
 .coveralls.*
 .coverage
@@ -11,11 +12,20 @@ site/
 .cache
 coverage.xml
 #################  dependencies   #################
+*.swp
+npm-debug.log
 node_modules/
 bower_components/
 package-lock.json
 #################    dev files    #################
+test/
+docs/
+.babelrc
+webpack.config.js
+karma.config.js
 ################  version control  ################
+.gitignore
+.git/
 #################    IDE files    #################
 .DS_STORE
 .netbeans

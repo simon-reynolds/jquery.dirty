@@ -264,7 +264,7 @@ QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", functi
   $input.trigger("change");
 
   // Assert II
-  assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly. Value should be 1, was " + onDirtyCalledCount);
+  assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly. Value should be 2, was " + onDirtyCalledCount);
 });
 
 QUnit.test("form is marked as dirty when setAsDirty called", function(assert){

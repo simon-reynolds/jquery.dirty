@@ -39,13 +39,6 @@
         }
     };
 
-    var setNamespacedEventTriggers = function(d) {
-
-        d.form.find("input, select, textarea").on("change click keyup keydown blur", function(e) {
-            $(this).trigger(e.type + ".dirty");
-        });
-    };
-
     var setNamespacedEvents = function(d) {
 
         d.form.find("input, select, textarea").on("change.dirty click.dirty keyup.dirty keydown.dirty blur.dirty", function(e) {
@@ -129,7 +122,6 @@
 
             setSubmitEvents(d);
             setNamespacedEvents(d);
-            setNamespacedEventTriggers(d);
         },
 
         isFieldDirty: function($field) {
@@ -193,10 +185,6 @@
                 d.setDirty();
             } else {
                 d.setClean();
-            }
-                       
-            if (e) {
-                e.stopImmediatePropagation();
             }
         },
 

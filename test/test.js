@@ -1,5 +1,5 @@
-/// <reference path="../bower_components/jquery/dist/jquery.min.js" />
-/// <reference path="../bower_components/qunit/qunit/qunit.js" />
+/// <reference path="../node_modules/jquery/dist/jquery.min.js" />
+/// <reference path="../node_modules/qunitjs/qunit/qunit.js" />
 /// <reference path="../dist/jquery.dirty.js" />
 
 QUnit.module("jquery.dirty", {
@@ -264,7 +264,7 @@ QUnit.test("onDirty fired each time when fireEventsOnEachChange is true", functi
   $input.trigger("change");
 
   // Assert II
-  assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly. Value should be 1, was " + onDirtyCalledCount);
+  assert.ok(onDirtyCalledCount === 2, "onDirty was not called correctly. Value should be 2, was " + onDirtyCalledCount);
 });
 
 QUnit.test("form is marked as dirty when setAsDirty called", function(assert){

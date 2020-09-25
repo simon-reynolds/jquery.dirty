@@ -1,6 +1,6 @@
 {
   "name": "jquery.dirty",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A jQuery plugin for detecting if a form has been modified",
   "main": "dist/jquery.dirty.js",
   "directories": {

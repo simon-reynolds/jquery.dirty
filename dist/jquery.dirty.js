@@ -1,7 +1,7 @@
 /*
  * Dirty 
  * jquery plugin to detect when a form is modified
- * (c) 2016 Simon Taite - https://github.com/simontaite/jquery.dirty
+ * (c) 2016 Simon Taite - https://github.com/simon-reynolds/jquery.dirty
  * originally based on jquery.dirrty by Ruben Torres - https://github.com/rubentd/dirrty
  * Released under the MIT license
  */
@@ -31,8 +31,9 @@
         });
 
         if (d.options.preventLeaving) {
-            $(window).on("beforeunload", function() {
+            $(window).on("beforeunload", function(event) {
                 if (d.isDirty && !d.submitting) {
+                    event.preventDefault();
                     return d.options.leavingMessage;
                 }
             });

@@ -1,9 +1,9 @@
 {
   "name": "jquery.dirty",
-  "version": "0.8.1",
-  "homepage": "https://github.com/simontaite/jquery.dirty",
+  "version": "0.8.2",
+  "homepage": "https://github.com/simon-reynolds/jquery.dirty",
   "authors": [
-    "Simon Taite <simontaite1@gmail.com>"
+    "Simon Reynolds <bower@simonreynolds.ie>"
   ],
   "description": "jquery plugin to detect when a form is modified",
   "main": "dist/jquery.dirty.js",

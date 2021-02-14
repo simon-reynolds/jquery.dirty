@@ -31,8 +31,9 @@
         });
 
         if (d.options.preventLeaving) {
-            $(window).on("beforeunload", function() {
+            $(window).on("beforeunload", function(event) {
                 if (d.isDirty && !d.submitting) {
+                    event.preventDefault();
                     return d.options.leavingMessage;
                 }
             });

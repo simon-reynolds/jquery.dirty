@@ -1,6 +1,6 @@
 {
   "name": "jquery.dirty",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "A jQuery plugin for detecting if a form has been modified",
   "main": "dist/jquery.dirty.js",
   "directories": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simontaite/jquery.dirty.git"
+    "url": "git+https://github.com/simon-reynolds/jquery.dirty.git"
   },
   "keywords": [
     "ecosystem:jquery",
@@ -23,14 +23,14 @@
   ],
   "license": "MIT",
   "author": {
-    "name": "Simon Taite",
-    "email": "simon@simontaite.com",
-    "url": "https://simontaite.com"
+    "name": "Simon Reynolds",
+    "email": "npmjs@simonreynolds.ie",
+    "url": "https://simonreynolds.ie"
   },
   "bugs": {
-    "url": "https://github.com/simontaite/jquery.dirty/issues"
+    "url": "https://github.com/simon-reynolds/jquery.dirty/issues"
   },
-  "homepage": "https://simontaite.github.io/jquery.dirty/",
+  "homepage": "https://simon-reynolds.github.io/jquery.dirty/",
   "devDependencies": {
     "@types/jquery": "^3.3.4",
     "braces": "^3.0.2",

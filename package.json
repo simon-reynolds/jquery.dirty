@@ -38,7 +38,7 @@
     "kind-of": "6.0.3",
     "minimist": "1.2.6",
     "node-qunit-phantomjs": "2.1.1",
-    "qunitjs": "^2.0.1"
+    "qunitjs": "2.4.0"
   },
   "resolutions": {
     "minimist": "1.2.6",

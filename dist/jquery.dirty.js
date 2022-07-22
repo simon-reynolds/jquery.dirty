@@ -47,10 +47,14 @@
         });
 
         d.form.on("dirty", function() {
+            if (typeof d.options.onDirty !== "function") return;
+
             d.options.onDirty();
         });
 
         d.form.on("clean", function() {
+            if (typeof d.options.onClean !== "function") return;
+
             d.options.onClean();
         });
     };

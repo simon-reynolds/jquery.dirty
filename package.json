@@ -36,12 +36,12 @@
     "braces": "3.0.2",
     "jquery": "3.6.0",
     "kind-of": "6.0.3",
-    "minimist": "1.2.6",
+    "minimist": "1.2.7",
     "node-qunit-phantomjs": "2.1.1",
     "qunitjs": "2.4.0"
   },
   "resolutions": {
-    "minimist": "1.2.6",
+    "minimist": "1.2.7",
     "braces": "3.0.2"
   }
 }

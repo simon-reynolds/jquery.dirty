@@ -143,6 +143,11 @@
                 var regex = new RegExp("^" + initialValue + "$", "i");
                 return !regex.test(currentValue);
             }
+            
+            // Array values must be compared explicitly, since "[a, b] === [a, b]" always returns false
+            if (Array.isArray(initialValue) && Array.isArray(currentValue)) {
+                return JSON.stringify(initialValue) !== JSON.stringify(currentValue);
+            }
 
             return currentValue !== initialValue;
         },

@@ -246,7 +246,7 @@
                     var isChecked = initialCheckedState === "checked";
 
                     $e.prop("checked", isChecked);
-                } if(isFile) {
+                } else if (isFile) {
                     e.value = "";
                     $(e).data(dataInitialValue, JSON.stringify(e.files))
 
@@ -279,9 +279,9 @@
             case "isdirty":
                 return d.isDirty;
             case "refreshevents":
-                d.refreshEvents();
+                return d.refreshEvents();
             case "resetform":
-                d.resetForm();
+                return d.resetForm();
             case "setasclean":
                 return d.setAsClean();
             case "setasdirty":

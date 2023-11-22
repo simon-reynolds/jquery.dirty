@@ -32,9 +32,9 @@
   },
   "homepage": "https://simon-reynolds.github.io/jquery.dirty/",
   "devDependencies": {
-    "@types/jquery": "3.5.14",
+    "@types/jquery": "3.5.29",
     "braces": "3.0.2",
-    "jquery": "3.6.0",
+    "jquery": "3.7.1",
     "kind-of": "6.0.3",
     "minimist": "1.2.6",
     "node-qunit-phantomjs": "2.1.1",

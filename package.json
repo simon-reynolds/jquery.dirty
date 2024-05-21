@@ -33,7 +33,7 @@
   "homepage": "https://simon-reynolds.github.io/jquery.dirty/",
   "devDependencies": {
     "@types/jquery": "3.5.14",
-    "braces": "3.0.2",
+    "braces": "3.0.3",
     "jquery": "3.6.0",
     "kind-of": "6.0.3",
     "minimist": "1.2.6",
@@ -42,6 +42,6 @@
   },
   "resolutions": {
     "minimist": "1.2.6",
-    "braces": "3.0.2"
+    "braces": "3.0.3"
   }
 }
